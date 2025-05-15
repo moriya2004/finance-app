@@ -7,10 +7,10 @@ import helmet from "helmet";
 import morgan from "morgan";
 import kpiRoutes from "./routes/kpi.js";
 import productRoutes from "./routes/product.js";
-//import transactionRoutes from "./routes/transaction.js";
+import transactionRoutes from "./routes/transaction.js";
 import KPI from "./models/KPI.js";
 import Product from "./models/Product.js";
-//import Transaction from "./models/Transaction.js";
+import Transaction from "./models/Transaction.js";
 import { kpis, products, transactions } from "./data/data.js";
 
 /* CONFIGURATIONS */
@@ -25,9 +25,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
 /* ROUTES */
-app.use("/kpi", kpiRoutes);
-app.use("/product", productRoutes);
-//app.use("/transaction", transactionRoutes);
+app.use("/finance/kpi", kpiRoutes);
+app.use("/finance/product", productRoutes);
+app.use("/finance/transaction", transactionRoutes);
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 9000;
@@ -40,6 +40,6 @@ mongoose
     //await mongoose.connection.db.dropDatabase();
     //await KPI.insertMany(kpis);
     //Product.insertMany(products);
-    // Transaction.insertMany(transactions);
+    //Transaction.insertMany(transactions);
   })
   .catch((error) => console.log(`${error} did not connect`));
