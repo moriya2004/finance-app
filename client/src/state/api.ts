@@ -7,15 +7,15 @@ export const api = createApi({
   tagTypes: ["Kpis", "Products","Transactions"],
   endpoints: (build) => ({
     getKpis: build.query<Array<GetKpisResponse>, void>({
-      query: () => "/finance/kpi/kpis/",
+      query: () => "/kpi/kpis/",
       providesTags: ["Kpis"],
     }),
     getProducts: build.query<Array<GetProductsResponse>, void>({
-      query: () => "/finance/product/products/",
+      query: () => "/product/products/",
       providesTags: ["Products"],
     }),
     getTransactions: build.query<Array<GetTransactionsResponse>, void>({
-      query: () => "/finance/transaction/transactions/",
+      query: () => "/transaction/transactions/",
       providesTags: ["Transactions"],
     }),
   }),
