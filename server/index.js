@@ -25,16 +25,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
 /* ROUTES */
-app.use("/finance/kpi", kpiRoutes);
-app.use("/finance/product", productRoutes);
-app.use("/finance/transaction", transactionRoutes);
+app.use("/api/kpi", kpiRoutes);
+app.use("/api/product", productRoutes);
+app.use("/api/transaction", transactionRoutes);
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 9000;
+const HOST = process.env.HOST || 'localhost';
 mongoose
   .connect(process.env.MONGO_URL)
   .then(async () => {
-    app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
+    app.listen(PORT,HOST, () => console.log(`Server Port: ${PORT}`));
 
     /* ADD DATA ONE TIME ONLY OR AS NEEDED */
     //await mongoose.connection.db.dropDatabase();
