@@ -14,7 +14,11 @@ import Transaction from "./models/Transaction.js";
 import { kpis, products, transactions } from "./data/data.js";
 
 /* CONFIGURATIONS */
-dotenv.config();
+const envFile = process.env.NODE_ENV === "production" ? ".env.production" : ".env.development";
+dotenv.config({ path: envFile });
+
+console.log("Mongo URL:", process.env.MONGO_URL);
+console.log("Environment:", process.env.NODE_ENV);
 const app = express();
 app.use(express.json());
 app.use(helmet());
