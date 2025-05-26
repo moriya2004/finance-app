@@ -23,8 +23,8 @@ const Row1 = () => {
   const { data, isLoading, error } = useGetKpisQuery();
 
   const revenue = useMemo(() => {
-    ב
-
+    if (!data || !data[0]?.monthlyData) return [];
+    
     return data[0].monthlyData.map(({ month, revenue }) => ({
       name: month.substring(0, 3),
       revenue,
