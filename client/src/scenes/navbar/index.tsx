@@ -1,12 +1,13 @@
-import {useState} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation  } from 'react-router-dom';
 import PixIcon from "@mui/icons-material/Pix";
-import { Box , Typography, useTheme } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import FlexBetween from '@/components/FlexBetween';
 
 const Navbar = () => {
-    const {palette} = useTheme();
-    const [selected, setSelected] = useState("dashboard");
+  const { palette } = useTheme();
+  const location = useLocation();
+
+  const currentPath = location.pathname;
   return (
     <FlexBetween mb="0.25rem" p="0.5rem 0rem" color={palette.grey[300]}>
       {/* LEFT SIDE */}
@@ -22,9 +23,8 @@ const Navbar = () => {
         <Box sx={{ "&:hover": { color: palette.primary[100] } }}>
           <Link
             to="/"
-            onClick={() => setSelected("dashboard")}
             style={{
-              color: selected === "dashboard" ? "inherit" : palette.grey[700],
+              color: currentPath === "/" ? "inherit" : palette.grey[700],
               textDecoration: "inherit",
             }}
           >
@@ -34,13 +34,23 @@ const Navbar = () => {
         <Box sx={{ "&:hover": { color: palette.primary[100] } }}>
           <Link
             to="/predictions"
-            onClick={() => setSelected("predictions")}
             style={{
-              color: selected === "predictions" ? "inherit" : palette.grey[700],
+              color: currentPath === "/predictions" ? "inherit" : palette.grey[700],
               textDecoration: "inherit",
             }}
           >
             predictions
+          </Link>
+        </Box>
+        <Box sx={{ "&:hover": { color: palette.primary[100] } }}>
+          <Link
+            to="/products"
+            style={{
+              color: currentPath === "/products" ? "inherit" : palette.grey[700],
+              textDecoration: "inherit",
+            }}
+          >
+            products
           </Link>
         </Box>
       </FlexBetween>

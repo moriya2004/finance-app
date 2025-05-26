@@ -20,45 +20,39 @@ import {
 
 const Row1 = () => {
   const { palette } = useTheme();
-  const { data } = useGetKpisQuery();
+  const { data, isLoading, error } = useGetKpisQuery();
 
   const revenue = useMemo(() => {
-    return (
-      data &&
-      data[0].monthlyData.map(({ month, revenue }) => {
-        return {
-          name: month.substring(0, 3),
-          revenue: revenue,
-        };
-      })
-    );
+    if (!data || !data[0]?.monthlyData) return [];
+    
+    return data[0].monthlyData.map(({ month, revenue }) => ({
+      name: month.substring(0, 3),
+      revenue,
+    }));
   }, [data]);
 
   const revenueExpenses = useMemo(() => {
-    return (
-      data &&
-      data[0].monthlyData.map(({ month, revenue, expenses }) => {
-        return {
-          name: month.substring(0, 3),
-          revenue: revenue,
-          expenses: expenses,
-        };
-      })
-    );
+    if (!data || !data[0]?.monthlyData) return [];
+
+    return data[0].monthlyData.map(({ month, revenue, expenses }) => ({
+      name: month.substring(0, 3),
+      revenue,
+      expenses,
+    }));
   }, [data]);
 
   const revenueProfit = useMemo(() => {
-    return (
-      data &&
-      data[0].monthlyData.map(({ month, revenue, expenses }) => {
-        return {
-          name: month.substring(0, 3),
-          revenue: revenue,
-          profit: (revenue - expenses).toFixed(2),
-        };
-      })
-    );
+    if (!data || !data[0]?.monthlyData) return [];
+
+    return data[0].monthlyData.map(({ month, revenue, expenses }) => ({
+      name: month.substring(0, 3),
+      revenue,
+      profit: (revenue - expenses).toFixed(2),
+    }));
   }, [data]);
+
+  if (isLoading) return <div>Loading data...</div>;
+  if (error) return <div>Error loading data</div>;
 
   return (
     <>

@@ -22,25 +22,23 @@ const Predictions = () => {
   const { data: kpiData } = useGetKpisQuery();
 
   const formattedData = useMemo(() => {
-    if (!kpiData) return [];
+    if (!kpiData || !kpiData[0] || !kpiData[0].monthlyData) return [];
+
     const monthData = kpiData[0].monthlyData;
 
     const formatted: Array<DataPoint> = monthData.map(
-      ({ revenue }, i: number) => {
-        return [i, revenue];
-      }
+      ({ revenue }, i: number) => [i, revenue]
     );
     const regressionLine = regression.linear(formatted);
 
-    return monthData.map(({ month, revenue }, i: number) => {
-      return {
-        name: month,
-        "Actual Revenue": revenue,
-        "Regression Line": regressionLine.points[i][1],
-        "Predicted Revenue": regressionLine.predict(i + 12)[1],
-      };
-    });
+    return monthData.map(({ month, revenue }, i: number) => ({
+      name: month.substring(0, 3),
+      "Actual Revenue": revenue,
+      "Regression Line": regressionLine.points[i][1],
+      "Predicted Revenue": regressionLine.predict(i + 12)[1],
+    }));
   }, [kpiData]);
+
 
   return (
     <DashboardBox width="100%" height="100%" p="1rem" overflow="hidden">
