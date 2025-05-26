@@ -22,15 +22,17 @@ router.post("/products", async (req, res) => {
 });
 router.put("/products/:id", async (req, res) => {
   try {
-    const updatedProduct = await Product.findByIdAndUpdate(
+    const product  = await Product.findById(
       req.params.id,
       req.body,
-      { new: true }  // מחזיר את האובייקט לאחר העדכון
     );
-    console.log("Updated product:", updatedProduct);
-    if (!updatedProduct) {
+    if (!product ) {
       return res.status(404).json({ message: "Product not found" });
     }
+    if (req.body.price !== undefined) product.price = req.body.price;
+    if (req.body.expense !== undefined) product.expense = req.body.expense;
+    const updatedProduct = await product.save();
+    console.log("Updated product:", updatedProduct);
     res.json(updatedProduct);
   } catch (error) {
     res.status(400).json({ message: error.message });

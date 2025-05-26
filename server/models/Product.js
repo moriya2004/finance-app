@@ -10,11 +10,13 @@ const ProductSchema = new Schema(
       type: mongoose.Types.Currency,
       currency: "USD",
       get: (v) => v / 100,
+      set: (v) => Math.round(v * 100),
     },
     expense: {
       type: mongoose.Types.Currency,
       currency: "USD",
       get: (v) => v / 100,
+      set: (v) => Math.round(v * 100),
     },
     transactions: [
       {
