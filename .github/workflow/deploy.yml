@@ -1,0 +1,36 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to EC2 and Restart Service
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST2 }}
+          username: ${{ secrets.EC2_USER || 'ubuntu' }}
+          key: ${{ secrets.EC2_SSH_KEY2 }}
+          script: |
+            echo "🔁 Pull latest code"
+            cd /home/ubuntu/finance-app
+            git pull origin main
+
+            echo "💻 Build frontend"
+            cd /home/ubuntu/finance-app/client
+            npm install
+            npm run build
+
+            echo "🚀 Deploy frontend to /var/www/html"
+            sudo rm -rf /var/www/html/*
+            sudo cp -r dist/* /var/www/html/
+
+            echo "🔄 Restart backend service via systemd"
+            sudo systemctl restart finance.service
+            sudo systemctl status finance.service --no-pager
+            echo "✅ Deployment completed successfully"
